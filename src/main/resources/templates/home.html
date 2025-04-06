@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book List</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -2;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.7);
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
+            position: relative;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #4CAF50, #81c784);
+            margin: 12px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .top-action {
+            text-align: center;
+            margin: 30px auto 20px;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            color: white;
+            text-decoration: none;
+            min-width: 110px;
+        }
+
+        .action-button span {
+            font-size: 16px;
+        }
+
+        .add {
+            background-color: #2ecc71;
+        }
+
+        .add:hover {
+            background-color: #27ae60;
+        }
+
+        .update {
+            background-color: #3498db;
+        }
+
+        .update:hover {
+            background-color: #2980b9;
+        }
+
+        .delete {
+            background-color: #e74c3c;
+        }
+
+        .delete:hover {
+            background-color: #c0392b;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+
+        td:last-child {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        form {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-container"></div>
+<div class="background-overlay"></div>
+
+<h1>📚 All Books</h1>
+
+<div class="top-action">
+    <a th:href="@{/createBookForm}" class="action-button add">
+        <span>➕</span> Add Book
+    </a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${bookList}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td>
+            <a th:href="@{'/updateForm?id=' + ${book.id}}" class="action-button update">
+                <span>✏️</span> Edit
+            </a>
+            <form th:action="@{/deleteBook}" method="post" onsubmit="return confirm('Are you sure?');">
+                <input type="hidden" name="id" th:value="${book.id}" />
+                <button type="submit" class="action-button delete">
+                    <span>🗑️</span> Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

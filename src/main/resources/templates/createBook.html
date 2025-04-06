@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Book</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -2;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.6);
+            z-index: -1;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
+            position: relative;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            margin: 12px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        form {
+            width: 90%;
+            max-width: 450px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1e8449;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin: 25px auto;
+            padding: 10px 16px;
+            background-color: #3498db;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            width: fit-content;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .results {
+            width: 90%;
+            max-width: 450px;
+            margin: 0 auto 30px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .results h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .results ul {
+            padding-left: 18px;
+            margin: 0;
+            color: #555;
+        }
+
+        .results li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-container"></div>
+<div class="background-overlay"></div>
+
+<h2 class="page-title">📚 Create a New Book</h2>
+
+<form th:action="@{/saveBook}" th:object="${book}" method="post">
+    <label for="title">Title</label>
+    <input type="text" id="title" th:field="*{title}" oninput="searchOpenLibrary()" required>
+
+    <label for="author">Author</label>
+    <input type="text" id="author" th:field="*{author}" required>
+
+    <label for="price">Price</label>
+    <input type="number" id="price" th:field="*{price}" step="0.01" required>
+
+    <button type="submit">Save Book</button>
+</form>
+
+<div class="results" id="search-results" style="display: none;">
+    <h3>🔍 Search Results (via OpenLibrary)</h3>
+    <ul id="results-list"></ul>
+</div>
+
+<a th:href="@{/}" class="back-button">← Back to Book List</a>
+
+<script>
+    let debounceTimeout;
+
+    function searchOpenLibrary() {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            const query = document.getElementById('title').value.trim();
+            if (!query) {
+                document.getElementById('search-results').style.display = 'none';
+                return;
+            }
+
+            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(query)}&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('results-list');
+                    list.innerHTML = '';
+
+                    if (data.docs && data.docs.length > 0) {
+                        data.docs.forEach(book => {
+                            const item = document.createElement('li');
+                            item.textContent = `${book.title} — ${book.author_name ? book.author_name.join(', ') : 'Unknown Author'}`;
+                            list.appendChild(item);
+                        });
+                        document.getElementById('search-results').style.display = 'block';
+                    } else {
+                        list.innerHTML = '<li>No results found</li>';
+                        document.getElementById('search-results').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('OpenLibrary API error:', error);
+                });
+        }, 400); // debounce delay
+    }
+</script>
+
+</body>
+</html>
