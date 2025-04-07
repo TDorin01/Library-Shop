@@ -1,7 +1,9 @@
 package com.example.Library.Shop.service;
 
 import com.example.Library.Shop.model.Book;
+import com.example.Library.Shop.model.Users;
 import com.example.Library.Shop.repository.BookRepository;
+import com.example.Library.Shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -20,7 +23,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public void saveBook(Book book) {
+    public void saveBook(Book book, int userId) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        book.setUser(user);
         bookRepository.save(book);
     }
 
@@ -30,5 +36,14 @@ public class BookService {
         book.setTitle(title);
         book.setPrice(price);
         bookRepository.save(book);
+    }
+
+    public List<Book> findBooksByUser(Users user) {
+        return bookRepository.findByUser(user);
+    }
+    public double calculateTotalBooksPrice(List<Book>bookList ){
+        return bookList.stream()
+                .mapToDouble(Book::getPrice)
+                .sum();
     }
 }

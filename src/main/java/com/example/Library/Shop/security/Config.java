@@ -16,11 +16,18 @@ public class Config {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(c -> c.disable())
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/loginForm")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/loginForm?error=true")
+                        .permitAll()
+                       )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated()
+                .requestMatchers("/registerForm").permitAll()
+                .requestMatchers("/registerUser").permitAll()
+                .anyRequest().authenticated()
+
                 );
         return http.build();
     }

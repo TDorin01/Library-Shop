@@ -19,6 +19,9 @@ public class Book {
     private String title;
     private String author;
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
 
 }
