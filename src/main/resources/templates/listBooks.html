@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>My Books</title>
+    <title>My list of Books</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -143,6 +143,26 @@
             font-size: 18px;
             color: #2c3e50;
         }
+
+        /* ✅ Logout button style */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            padding: 10px 16px;
+            background-color: #e67e22;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #d35400;
+        }
     </style>
 </head>
 <body>
@@ -150,7 +170,10 @@
 <div class="background-container"></div>
 <div class="background-overlay"></div>
 
-<h1>📚 My Books</h1>
+<!-- ✅ Logout Button -->
+<a th:href="@{/logout}" class="logout-btn">🔓 Logout</a>
+
+<h1>📚 My list of Books</h1>
 
 <div class="top-action">
     <a th:href="@{/createBookForm}" class="action-button add">

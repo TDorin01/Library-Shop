@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name="book")
 @Getter
@@ -19,6 +21,7 @@ public class Book {
     private String title;
     private String author;
     private double price;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;

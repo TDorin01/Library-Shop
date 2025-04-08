@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Coșul Meu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -2;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.6);
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 40px;
+            text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
+            position: relative;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #6dd5fa);
+            margin: 12px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cart-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 20px;
+            color: #777;
+            margin-top: 40px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-align: center;
+            color: #3498db;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2ecc71;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            float: right;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-container"></div>
+<div class="background-overlay"></div>
+
+<h1>🛒 Coșul de Cumpărături</h1>
+
+<div class="cart-container" th:if="${cart != null and !#lists.isEmpty(cart)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Titlu</th>
+            <th>Autor</th>
+            <th>Preț</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${cart}">
+            <td th:text="${book.title}">Titlu</td>
+            <td th:text="${book.author}">Autor</td>
+            <td th:text="${book.price + ' lei'}">0.00 lei</td>
+            <td>
+                <form th:action="@{/cart/delete}" method="post" style="margin:0;">
+                    <input type="hidden" th:name="bookId" th:value="${book.id}" />
+                    <button type="submit" class="delete-btn">🗑️ Șterge</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="total">
+        Total: <span th:text="${totalPrice + ' lei'}">0.00 lei</span>
+    </div>
+
+    <form th:action="@{/order/checkout}" method="post">
+        <button class="checkout-btn" type="submit">✅ Plasează comanda</button>
+    </form>
+
+    <div style="clear: both;"></div>
+    <a class="back-link" th:href="@{/}">← Înapoi la homepage</a>
+</div>
+
+<div class="cart-container" th:if="${cart == null or #lists.isEmpty(cart)}">
+    <p class="empty-message">Coșul tău este gol.</p>
+    <a class="back-link" th:href="@{/}">← Înapoi la homepage</a>
+</div>
+
+</body>
+</html>

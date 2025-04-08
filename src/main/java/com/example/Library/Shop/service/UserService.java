@@ -3,8 +3,11 @@ package com.example.Library.Shop.service;
 import com.example.Library.Shop.model.Users;
 import com.example.Library.Shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,5 +19,12 @@ public class UserService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
+
+    public void deleteUserByUsername(String username) {
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        userRepository.delete(user);
+    }
+
 
 }

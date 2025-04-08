@@ -151,6 +151,13 @@
         .results li {
             margin-bottom: 8px;
         }
+
+        .image-preview {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -170,6 +177,10 @@
     <label for="price">Price</label>
     <input type="number" id="price" th:field="*{price}" step="0.01" required>
 
+    <label for="imageUrl">Image URL</label>
+    <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="https://..." required>
+    <img id="previewImage" class="image-preview" src="" alt="Preview" />
+
     <button type="submit">Save Book</button>
 </form>
 
@@ -178,7 +189,7 @@
     <ul id="results-list"></ul>
 </div>
 
-<a th:href="@{/}" class="back-button">← Back to Book List</a>
+<a th:href="@{/admin/listBooks}" class="back-button">← Back to Book List</a>
 
 <script>
     let debounceTimeout;
@@ -215,6 +226,17 @@
                 });
         }, 400); // debounce delay
     }
+
+    document.getElementById('imageUrl').addEventListener('input', function () {
+        const url = this.value;
+        const img = document.getElementById('previewImage');
+        if (url && url.startsWith('http')) {
+            img.src = url;
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    });
 </script>
 
 </body>

@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
+
 @Entity
 @Table(name="orders")
 @Getter
@@ -16,5 +21,14 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private LocalDateTime localDateTime;
+    private String orderUsername;
+    private String email;
+    private String address;
     private double totalPrice;
+    @OneToMany
+    List<Book>bookList;
+
+
+
 }

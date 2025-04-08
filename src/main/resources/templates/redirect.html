@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecționare...</title>
+    <meta http-equiv="refresh" content="0"> <!-- fallback -->
+</head>
+<body>
+<p>Se redirecționează către pagina potrivită...</p>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let isAdmin = [[${#authorization.expression('hasRole("ADMIN")')}]];
+    let isUser = [[${#authorization.expression('hasRole("USER")')}]];
+
+    if (isAdmin) {
+        window.location.href = "/admin/listBooks";
+    } else if (isUser) {
+        window.location.href = "/";
+    } else {
+        window.location.href = "/access-denied";
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

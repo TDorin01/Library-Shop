@@ -42,6 +42,8 @@ public class BookService {
         return bookRepository.findByUser(user);
     }
     public double calculateTotalBooksPrice(List<Book>bookList ){
+        if (bookList == null || bookList.isEmpty()) {
+            return 0.0;}
         return bookList.stream()
                 .mapToDouble(Book::getPrice)
                 .sum();

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalii Comandă</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.85);
+            z-index: -1;
+        }
+
+        .order-container {
+            max-width: 900px;
+            margin: 100px auto;
+            background: rgba(255, 255, 255, 0.97);
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-top: 40px;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+
+        .order-info, .billing-info {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .order-info span,
+        .billing-info span {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .total-row td {
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: right;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            text-align: center;
+            color: #3498db;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .confirm-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #2ecc71;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .confirm-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="order-container">
+
+    <h1>📦 Detalii Comandă</h1>
+
+    <div class="order-info">
+        <p><span>ID Comandă:</span> <span th:text="${order.id}">#12345</span></p>
+        <p><span>Data comenzii:</span> <span th:text="${#temporals.format(order.localDateTime, 'dd MMMM yyyy HH:mm')}">01 Aprilie 2025</span></p>
+        <p><span>Total:</span> <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></p>
+    </div>
+
+    <h2>🧾 Detalii Client</h2>
+    <div class="billing-info">
+        <p><span>Nume utilizator:</span> <span th:text="${order.orderUsername}">Ion Popescu</span></p>
+        <p><span>Email:</span> <span th:text="${order.email}">ion@email.com</span></p>
+        <p><span>Adresă:</span> <span th:text="${order.address}">Str. Exemplu, Nr. 123</span></p>
+    </div>
+
+    <h2>📚 Cărți comandate</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Titlu</th>
+            <th>Autor</th>
+            <th>Preț</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${order.bookList}">
+            <td th:text="${book.title}">Titlu</td>
+            <td th:text="${book.author}">Autor</td>
+            <td th:text="${book.price + ' lei'}">0.00 lei</td>
+        </tr>
+        <tr class="total-row">
+            <td colspan="3">Total: <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="back-link" th:href="@{/cart}">← Înapoi la comanda</a>
+
+    <!-- ✅ Buton: Confirmare comandă -->
+    <form th:action="@{/orderSucced}" method="get">
+        <button type="submit" class="confirm-btn">✅ Confirmă Finalizarea</button>
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -5,33 +5,47 @@
     <meta charset="UTF-8">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://images.unsplash.com/photo-1581092334894-99ead51f3e84?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-            background-size: cover;
             margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .overlay {
+        .background-container {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(255,255,255,0.85);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -2;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 0.6);
             z-index: -1;
         }
 
         .register-container {
             max-width: 420px;
             margin: 100px auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
         h2 {
             margin-bottom: 20px;
             color: #2c3e50;
+            font-size: 28px;
+            text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
         }
 
         form input {
@@ -41,6 +55,12 @@
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 16px;
+        }
+
+        form input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            outline: none;
         }
 
         button {
@@ -75,7 +95,8 @@
 </head>
 <body>
 
-<div class="overlay"></div>
+<div class="background-container"></div>
+<div class="background-overlay"></div>
 
 <div class="register-container">
     <h2>📝 Înregistrare Utilizator</h2>
@@ -83,8 +104,9 @@
     <form th:action="@{/registerUser}" method="post" th:object="${user}">
         <input type="text" th:field="*{username}" placeholder="Username" required />
         <input type="password" th:field="*{password}" placeholder="Password" required />
-        <input type="text" th:field="*{email}" placeholder="Email" required />
+        <input type="text" th:field="*{name}" placeholder="Nume complet" required />
         <input type="text" th:field="*{address}" placeholder="Adresă" required />
+        <input type="text" th:field="*{email}" placeholder="Email" required />
         <button type="submit">Înregistrează-te</button>
     </form>
 
