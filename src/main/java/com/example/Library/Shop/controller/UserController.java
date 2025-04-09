@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
-
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -20,7 +18,7 @@ public class UserController {
     @GetMapping("/registerForm")
     public String displayRegisterForm(Model model) {
         model.addAttribute("user", new Users());
-        return "register";
+        return "user/registerUserForm";
     }
 
     @PostMapping("/registerUser")
@@ -32,9 +30,8 @@ public class UserController {
     @GetMapping("/loginForm")
     public String getLoginForm(Model model) {
 
-        return "loginUser";
+        return "user/loginUser";
     }
-
 
 }
 

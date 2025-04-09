@@ -7,7 +7,7 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
             background-size: cover;
             color: #2c3e50;
             text-align: center;
@@ -23,37 +23,53 @@
 
         .content {
             max-width: 600px;
-            margin: 150px auto;
-            padding: 40px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            margin: 140px auto;
+            padding: 50px 40px;
+            background-color: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .checkmark {
+            font-size: 64px;
+            color: #27ae60;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
+            font-size: 30px;
+            color: #2c3e50;
+            margin-bottom: 16px;
         }
 
         p {
             font-size: 18px;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
+            color: #555;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 24px;
+            padding: 14px 30px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 8px;
             text-decoration: none;
             color: white;
             background-color: #3498db;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .btn:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -62,14 +78,11 @@
 <div class="overlay"></div>
 
 <div class="content">
-    <h1>🎉 Comanda a fost trimisă cu succes!</h1>
-    <p>Mulțumim pentru achiziție! Poți verifica comanda ta în secțiunea „Comenzile Mele”.</p>
+    <div class="checkmark">✔️</div>
+    <h1>Comanda ta a fost plasată cu succes!</h1>
+    <p>Îți mulțumim pentru încredere! Ne bucurăm că ai ales Biblioteca Online 📚</p>
 
-    <!-- ✅ Buton: Înapoi la homepage -->
     <a th:href="@{/}" class="btn">🏠 Înapoi la homepage</a>
-
-    <!-- ✅ Buton: Vezi comenzile -->
-    <a th:href="@{/orders}" class="btn" style="margin-left: 12px;">📦 Comenzile Mele</a>
 </div>
 
 </body>

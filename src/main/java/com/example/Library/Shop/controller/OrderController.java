@@ -32,33 +32,30 @@ public class OrderController {
     public String showOrderDetails(@PathVariable int id, Model model) {
         Orders order = orderRepository.findById(id);
         model.addAttribute("order", order);
-        return "orderDetails";
+        return "order/orderDetailsForm";
     }
 
     @PostMapping("/order/checkout")
     public String placeOrder(HttpSession session, Model model, Authentication authentication) {
         List<Book> cart = (List<Book>) session.getAttribute("cart");
-
         Users user = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         Orders order = new Orders();
         order.setBookList(cart);
-        order.setOrderUsername(user.getUsername());
+        order.setOrderUsername(user.getName());
         order.setLocalDateTime(LocalDateTime.now());
         order.setTotalPrice(bookService.calculateTotalBooksPrice(cart));
         order.setEmail(user.getEmail());
         order.setAddress(user.getAddress());
-
         Orders savedOrder = orderRepository.save(order);
-
         session.removeAttribute("cart");
-
         return "redirect:/orders/" + savedOrder.getId();
     }
+
     @GetMapping("/orderSucced")
     public String orderSucceded (){
-        return "orderSucced";
+
+        return "order/orderSuccedForm";
     }
     @PostMapping("/cart/delete")
     public String removeFromCart(@RequestParam("bookId") Long bookId, HttpSession session) {

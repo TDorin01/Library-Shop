@@ -38,7 +38,7 @@ public class HomeController {
             model.addAttribute("userRole", user.getRole()); // ex: ROLE_ADMIN
         }
 
-        return "home";
+        return "/home";
     }
 
     @GetMapping("/cart")
@@ -46,7 +46,7 @@ public class HomeController {
         List<Book> cart = (List<Book>) session.getAttribute("cart");
         model.addAttribute("cart", cart);
         model.addAttribute("totalPrice", bookService.calculateTotalBooksPrice(cart));
-        return "cart";
+        return "cart/cartForm";
     }
 
     @PostMapping("/cart/add")
@@ -73,7 +73,7 @@ public class HomeController {
             ApiResponse = List.of(" Nu a fost gasita nicio carte.");
         }
         model.addAttribute("apiList", ApiResponse);
-        return "response";
+        return "api/response";
     }
 
 
