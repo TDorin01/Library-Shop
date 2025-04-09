@@ -1,4 +1,5 @@
 package com.example.Library.Shop.controller;
+
 import com.example.Library.Shop.model.Book;
 import com.example.Library.Shop.model.Orders;
 import com.example.Library.Shop.model.Users;
@@ -28,11 +29,16 @@ public class BookController {
     public String getUsersBooks(Model model, Authentication authentication) {
         Users user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new RuntimeException("No user find"));
         List<Book> bookList = bookService.findBooksByUser(user);
-        model.addAttribute("totalPrice",bookService.calculateTotalBooksPrice(bookList));
-        model.addAttribute("bookList",bookList );
+        model.addAttribute("totalPrice", bookService.calculateTotalBooksPrice(bookList));
+        model.addAttribute("bookList", bookList);
         return "listBooks";
 
     }
+    @GetMapping("/admin/adminForm")
+    public String getAdminFormView() {
+       return "adminForm" ;
+    }
+
 
     @GetMapping("/createBookForm")
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -50,7 +56,7 @@ public class BookController {
 
     @PostMapping("/updateBook")
     public String updateBook(@ModelAttribute Book book, @RequestParam("id") int id) {
-        bookService.updateBook(id, book.getTitle(), book.getAuthor(), book.getPrice());
+        bookService.updateBook(id, book.getTitle(), book.getAuthor(), book.getPrice(),book.getCategory());
         return "redirect:/admin/listBooks";
     }
 
@@ -75,5 +81,11 @@ public class BookController {
         return "updateBookForm";
     }
 
+    @GetMapping("/bookCategory")
+    public String getBookByCategory(Model model,@RequestParam String category){
+        List<Book>bookList = bookRepository.findByCategory(category);
+        model.addAttribute("bookCategoryList",bookList);
+        return "bookCategoryForm";
+    }
 
 }

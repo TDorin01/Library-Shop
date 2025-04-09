@@ -22,6 +22,7 @@ public class Book {
     private String author;
     private double price;
     private String imageUrl;
+    private String category;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;

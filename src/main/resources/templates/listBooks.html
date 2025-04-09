@@ -144,7 +144,6 @@
             color: #2c3e50;
         }
 
-        /* ✅ Logout button style */
         .logout-btn {
             position: absolute;
             top: 20px;
@@ -162,6 +161,19 @@
 
         .logout-btn:hover {
             background-color: #d35400;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 20px auto 40px;
+            color: #3498db;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -191,6 +203,7 @@
         <th>#</th>
         <th>Title</th>
         <th>Author</th>
+        <th>Category</th>
         <th>Price</th>
         <th>Actions</th>
     </tr>
@@ -200,6 +213,7 @@
         <td th:text="${stat.index + 1}">1</td>
         <td th:text="${book.title}">Book Title</td>
         <td th:text="${book.author}">Book Author</td>
+        <td th:text="${book.category}">Category</td>
         <td th:text="${book.price + ' lei'}">49.99 lei</td>
         <td>
             <a th:href="@{'/updateForm?id=' + ${book.id}}" class="action-button update">
@@ -220,6 +234,9 @@
 <div th:if="${!#lists.isEmpty(bookList)}" class="total-price">
     <strong>Total Price:</strong> <span th:text="${#numbers.formatDecimal(totalPrice, 1, '2', 'COMMA')} + ' lei'">0,00 lei</span>
 </div>
+
+<!-- Back to Admin Panel -->
+<a class="back-link" th:href="@{/admin/adminForm}">← Înapoi la panoul de administrare</a>
 
 </body>
 </html>

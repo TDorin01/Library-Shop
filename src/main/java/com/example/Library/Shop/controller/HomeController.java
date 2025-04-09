@@ -35,10 +35,10 @@ public class HomeController {
 
             model.addAttribute("loggedInUser", user.getUsername());
             model.addAttribute("userId", user.getId());
-            model.addAttribute("userRole", user.getRole()); // ex: ROLE_ADMIN
+            model.addAttribute("userRole", user.getRole());
         }
 
-        return "/home";
+        return "homePageForm";
     }
 
     @GetMapping("/cart")

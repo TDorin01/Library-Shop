@@ -9,4 +9,6 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
     List<Book> findByUser(Users user);
+
+    List<Book> findByCategory(String category);
 }

@@ -104,6 +104,15 @@
 
         .action-cell {
             text-align: center;
+            vertical-align: middle;
+        }
+
+        .action-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
         }
     </style>
 </head>
@@ -123,7 +132,6 @@
         <tr>
             <th><i class="fas fa-user icon"></i>Username</th>
             <th><i class="fas fa-envelope icon"></i>Email</th>
-            <th><i class="fas fa-clock icon"></i>Ultima Activitate</th>
             <th><i class="fas fa-cog icon"></i>Acțiuni</th>
         </tr>
         </thead>
@@ -131,19 +139,22 @@
         <tr th:each="user : ${connectedUsers}">
             <td th:text="${user.username}">user</td>
             <td th:text="${user.email}">email@example.com</td>
-            <td th:text="${#dates.format(user.lastActive, 'dd MMM yyyy HH:mm')}">05 Apr 2025 12:00</td>
             <td class="action-cell">
-                <form th:action="@{/admin/deleteUser}" method="post"
-                      th:onsubmit="return confirm('Ești sigur că vrei să ștergi acest utilizator?');">
-                    <input type="hidden" name="username" th:value="${user.username}" />
-                    <button type="submit" class="delete-btn">🗑️ Șterge</button>
-                </form>
+                <div class="action-wrapper">
+                    <form th:action="@{/admin/deleteUser}" method="post"
+                          th:onsubmit="return confirm('Ești sigur că vrei să ștergi acest utilizator?');">
+                        <input type="hidden" name="username" th:value="${user.username}"/>
+                        <button type="submit" class="delete-btn">🗑️ Șterge</button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a class="back-link" th:href="@{/admin}">← Înapoi la panoul de administrare</a>
+    <div style="text-align: center;">
+        <a class="back-link" th:href="@{/admin/adminForm}">← Înapoi la panoul de administrare</a>
+    </div>
 </div>
 
 </body>

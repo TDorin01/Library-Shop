@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Redirecționare...</title>
-    <meta http-equiv="refresh" content="0"> <!-- fallback -->
+    <meta http-equiv="refresh" content="0">
 </head>
 <body>
 <p>Se redirecționează către pagina potrivită...</p>
@@ -14,7 +14,7 @@
     let isUser = [[${#authorization.expression('hasRole("USER")')}]];
 
     if (isAdmin) {
-        window.location.href = "/admin/listBooks";
+        window.location.href = "/admin/adminForm";
     } else if (isUser) {
         window.location.href = "/";
     } else {

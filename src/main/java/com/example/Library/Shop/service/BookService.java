@@ -30,12 +30,14 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public void updateBook(int id, String title, String author, double price) {
+    public void updateBook(int id, String title, String author, double price,String category) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
         book.setAuthor(author);
         book.setTitle(title);
         book.setPrice(price);
+        book.setCategory(category);
         bookRepository.save(book);
+
     }
 
     public List<Book> findBooksByUser(Users user) {
@@ -48,4 +50,5 @@ public class BookService {
                 .mapToDouble(Book::getPrice)
                 .sum();
     }
+
 }

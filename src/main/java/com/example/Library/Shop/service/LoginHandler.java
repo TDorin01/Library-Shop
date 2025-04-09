@@ -32,7 +32,7 @@ public class LoginHandler implements AuthenticationSuccessHandler {
         int userId = user.getId();
 
         if ("ROLE_ADMIN".equals(role)) {
-            response.sendRedirect("/admin/listBooks");
+            response.sendRedirect("/admin/adminForm");
         } else if ("ROLE_USER".equals(role)) {
             response.sendRedirect("/?id=" + userId);
         }
