@@ -3,6 +3,7 @@ package com.example.Library.Shop.controller;
 import com.example.Library.Shop.model.Book;
 import com.example.Library.Shop.model.Orders;
 import com.example.Library.Shop.model.Users;
+import com.example.Library.Shop.model.dto.BookCreateDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.repository.OrderRepository;
 import com.example.Library.Shop.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,18 +34,17 @@ public class BookController {
         model.addAttribute("totalPrice", bookService.calculateTotalBooksPrice(bookList));
         model.addAttribute("bookList", bookList);
         return "listBooks";
-
     }
+
     @GetMapping("/admin/adminForm")
     public String getAdminFormView() {
-       return "adminForm" ;
+        return "adminForm";
     }
-
 
     @GetMapping("/createBookForm")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public String createBook(Model model) {
-        model.addAttribute("book", new Book());
+    public String createBook(@ModelAttribute BookCreateDto bookCreateDto) {
+        bookService.createBook(bookCreateDto);
         return "createBook";
     }
 
@@ -55,15 +56,21 @@ public class BookController {
     }
 
     @PostMapping("/updateBook")
-    public String updateBook(@ModelAttribute Book book, @RequestParam("id") int id) {
-        bookService.updateBook(id, book.getTitle(), book.getAuthor(), book.getPrice(),book.getCategory());
+    public String updateBook(@ModelAttribute BookCreateDto bookCreateDto, @RequestParam("id") int id) {
+        bookService.updateBook(id, bookCreateDto);
         return "redirect:/admin/listBooks";
+    }
+
+    @GetMapping("/updateForm")
+    public String getUpdateForm(@RequestParam("id") int id, Model model) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        model.addAttribute("book", book);
+        return "updateBookForm";
     }
 
     @PostMapping("/deleteBook")
     public String deleteBook(@RequestParam("id") int id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartea nu a fost găsită"));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
         List<Orders> orders = orderRepository.findAllByBookListContaining(book);
 
         for (Orders order : orders) {
@@ -74,17 +81,10 @@ public class BookController {
         return "redirect:/admin/listBooks";
     }
 
-    @GetMapping("/updateForm")
-    public String getUpdateForm(@RequestParam("id") int id, Model model) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Cartea nu a fost găsită"));
-        model.addAttribute("book", book);
-        return "updateBookForm";
-    }
-
     @GetMapping("/bookCategory")
-    public String getBookByCategory(Model model,@RequestParam String category){
-        List<Book>bookList = bookRepository.findByCategory(category);
-        model.addAttribute("bookCategoryList",bookList);
+    public String getBookByCategory(Model model, @RequestParam String category) {
+        List<Book> bookList = bookRepository.findByCategory(category);
+        model.addAttribute("bookCategoryList", bookList);
         return "bookCategoryForm";
     }
 

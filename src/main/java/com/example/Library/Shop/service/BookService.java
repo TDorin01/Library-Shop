@@ -2,6 +2,7 @@ package com.example.Library.Shop.service;
 
 import com.example.Library.Shop.model.Book;
 import com.example.Library.Shop.model.Users;
+import com.example.Library.Shop.model.dto.BookCreateDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +52,29 @@ public class BookService {
                 .sum();
     }
 
+    public Book createBook(BookCreateDto bookCreateDto) {
+        if (bookCreateDto == null) {
+            throw new RuntimeException("Datele nu pot fi nule!");
+        }
+        Book book = new Book();
+        book.setAuthor(bookCreateDto.getAuthor());
+        book.setTitle(bookCreateDto.getTitle());
+        book.setPrice(bookCreateDto.getPrice());
+        book.setCategory(bookCreateDto.getCategory());
+        book.setImageUrl(bookCreateDto.getImageUrl());
+        bookRepository.save(book);
+
+        return book;
+    }
+
+    public void updateBook(int id, BookCreateDto bookCreateDto) {
+    }
+
+    public List<Book> getBooksByCategory(String category) {
+        return bookRepository.findByCategory(category);
+    }
+
+    public Book findById(int id) {
+        return bookRepository.findById(id).orElse(null);
+    }
 }

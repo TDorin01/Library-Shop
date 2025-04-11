@@ -33,7 +33,7 @@
 
         .page-title {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 60px;
             font-size: 36px;
             font-weight: 700;
             color: #2c3e50;
@@ -55,6 +55,23 @@
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .top-right-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .top-right-button:hover {
+            background-color: #2980b9;
         }
 
         form {
@@ -108,26 +125,6 @@
             background-color: #1e8449;
         }
 
-        .back-button {
-            display: block;
-            text-align: center;
-            margin: 25px auto;
-            padding: 10px 16px;
-            background-color: #3498db;
-            color: #fff;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 6px;
-            width: fit-content;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .back-button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
         .results {
             width: 90%;
             max-width: 450px;
@@ -167,6 +164,8 @@
 <div class="background-container"></div>
 <div class="background-overlay"></div>
 
+<a th:href="@{/admin/listBooks}" class="top-right-button">← Back to Book List</a>
+
 <h2 class="page-title">📚 Create a New Book</h2>
 
 <form th:action="@{/saveBook}" th:object="${book}" method="post">
@@ -185,7 +184,10 @@
         <option value="muzica">🎵 Cărți de muzică</option>
         <option value="animale">🐾 Cărți despre animale</option>
         <option value="economie">💼 Cărți despre economie</option>
-        <option value="politica">🏛️ Cărți despre politică</option>
+        <option value="politica">🏛️ Cărți despre istorie</option>
+        <option value="cele-mai-citite">🔥 Cele mai citite</option>
+        <option value="promotii">💸 Promoțiile lunii</option>
+        <option value="noutati">🆕 Noutăți</option>
     </select>
 
     <label for="imageUrl">Image URL</label>
@@ -199,8 +201,6 @@
     <h3>🔍 Search Results (via OpenLibrary)</h3>
     <ul id="results-list"></ul>
 </div>
-
-<a th:href="@{/admin/listBooks}" class="back-button">← Back to Book List</a>
 
 <script>
     let debounceTimeout;

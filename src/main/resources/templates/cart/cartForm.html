@@ -31,14 +31,31 @@
             z-index: -1;
         }
 
+        .top-right-back {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            padding: 10px 16px;
+            background-color: #3498db;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .top-right-back:hover {
+            background-color: #2980b9;
+        }
+
         h1 {
             text-align: center;
             color: #2c3e50;
             font-size: 32px;
             font-weight: 700;
-            margin-top: 40px;
+            margin-top: 60px;
             text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
-            position: relative;
             animation: fadeInDown 0.6s ease-out;
         }
 
@@ -53,14 +70,8 @@
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .cart-container {
@@ -108,19 +119,6 @@
             margin-top: 40px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 30px;
-            text-align: center;
-            color: #3498db;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
         .checkout-btn {
             display: inline-block;
             padding: 12px 24px;
@@ -160,6 +158,8 @@
 <div class="background-container"></div>
 <div class="background-overlay"></div>
 
+<a class="top-right-back" th:href="@{/}">← Înapoi la homepage</a>
+
 <h1>🛒 Coșul de Cumpărături</h1>
 
 <div class="cart-container" th:if="${cart != null and !#lists.isEmpty(cart)}">
@@ -196,12 +196,10 @@
     </form>
 
     <div style="clear: both;"></div>
-    <a class="back-link" th:href="@{/}">← Înapoi la homepage</a>
 </div>
 
 <div class="cart-container" th:if="${cart == null or #lists.isEmpty(cart)}">
     <p class="empty-message">Coșul tău este gol.</p>
-    <a class="back-link" th:href="@{/}">← Înapoi la homepage</a>
 </div>
 
 </body>

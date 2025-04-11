@@ -104,11 +104,13 @@
     <form th:action="@{/registerUser}" method="post" th:object="${user}">
         <input type="text" th:field="*{username}" placeholder="Username" required />
         <input type="password" th:field="*{password}" placeholder="Password" required />
+        <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
         <input type="text" th:field="*{name}" placeholder="Nume complet" required />
         <input type="text" th:field="*{address}" placeholder="Adresă" required />
         <input type="text" th:field="*{email}" placeholder="Email" required />
         <button type="submit">Înregistrează-te</button>
     </form>
+
 
     <a th:href="@{/login}">Ai deja un cont? Autentifică-te</a>
 </div>

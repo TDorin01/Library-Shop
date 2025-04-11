@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,9 +27,14 @@ public class Orders {
     private String email;
     private String address;
     private double totalPrice;
-    @OneToMany
-    List<Book>bookList;
-
+    @ManyToMany
+    @JoinTable(
+            name = "orders_book_list",
+            joinColumns = @JoinColumn(name = "orders_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"orders_id", "book_id"})
+    )
+    private List<Book> bookList = new ArrayList<>();
 
 
 }

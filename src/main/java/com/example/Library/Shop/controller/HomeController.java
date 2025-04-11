@@ -32,12 +32,10 @@ public class HomeController {
         if (authentication != null) {
             MyUser myUser = (MyUser) authentication.getPrincipal();
             Users user = myUser.getUser();
-
             model.addAttribute("loggedInUser", user.getUsername());
             model.addAttribute("userId", user.getId());
             model.addAttribute("userRole", user.getRole());
         }
-
         return "homePageForm";
     }
 
@@ -54,7 +52,7 @@ public class HomeController {
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
 
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Cartea nu a fost gasita."));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
         List<Book> cart = (List<Book>) session.getAttribute("cart");
         if (cart == null) {

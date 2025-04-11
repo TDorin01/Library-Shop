@@ -19,7 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,7 +43,15 @@ public class OrderController {
         Users user = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Orders order = new Orders();
-        order.setBookList(cart);
+        if (order.getBookList() == null) {
+            order.setBookList(new ArrayList<>());
+        }
+        order.setBookList(
+                order.getBookList()
+                        .stream()
+                        .distinct()
+                        .collect(Collectors.toList())
+        );
         order.setOrderUsername(user.getName());
         order.setLocalDateTime(LocalDateTime.now());
         order.setTotalPrice(bookService.calculateTotalBooksPrice(cart));
