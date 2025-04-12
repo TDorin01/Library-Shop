@@ -3,6 +3,7 @@ import com.example.Library.Shop.model.Book;
 import com.example.Library.Shop.model.Orders;
 import com.example.Library.Shop.model.Users;
 import com.example.Library.Shop.model.dto.BookCreateDto;
+import com.example.Library.Shop.model.dto.BookUpdateDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.repository.OrderRepository;
 import com.example.Library.Shop.repository.UserRepository;
@@ -41,8 +42,8 @@ public class BookController {
 
     @GetMapping("/createBookForm")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public String createBook(@ModelAttribute BookCreateDto bookCreateDto) {
-        bookService.createBook(bookCreateDto);
+    public String createBook(Model model) {
+        model.addAttribute("book",new Book());
         return "createBook";
     }
 
@@ -54,8 +55,8 @@ public class BookController {
     }
 
     @PostMapping("/updateBook")
-    public String updateBook(@ModelAttribute BookCreateDto bookCreateDto, @RequestParam("id") int id) {
-        bookService.updateBook(id, bookCreateDto);
+    public String updateBook(@ModelAttribute BookUpdateDto bookUpdateDto) {
+        bookService.updateBook(bookUpdateDto);
         return "redirect:/admin/listBooks";
     }
 

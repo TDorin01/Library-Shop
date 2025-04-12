@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <title>My list of Books</title>
     <meta charset="UTF-8">
     <style>
@@ -193,7 +194,7 @@
 <h1 class="fade-in">📚 My list of Books</h1>
 
 <div class="top-action fade-in">
-    <a th:href="@{/createBookForm}" class="action-button add">
+    <a th:href="@{/createBookForm}" class="action-button add" method="get">
         <span>➕</span> Add Book
     </a>
 </div>

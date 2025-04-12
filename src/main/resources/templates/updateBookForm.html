@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <title>Update Book</title>
     <meta charset="UTF-8">
     <style>
@@ -99,6 +100,16 @@
             outline: none;
         }
 
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-bottom: 18px;
+            display: none;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
         button {
             width: 100%;
             padding: 12px;
@@ -171,8 +182,32 @@
         <option value="noutati">🆕 Noutăți</option>
     </select>
 
+    <label for="imageUrl">Image URL</label>
+    <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="https://..." required oninput="previewImage()">
+    <img id="previewImage" class="image-preview" src="" alt="Preview" />
+
     <button type="submit">Update Book</button>
 </form>
+
+<script>
+    function previewImage() {
+        const input = document.getElementById("imageUrl");
+        const preview = document.getElementById("previewImage");
+        const url = input.value.trim();
+
+        if (url.startsWith("http")) {
+            preview.src = url;
+            preview.style.display = "block";
+        } else {
+            preview.style.display = "none";
+        }
+    }
+
+
+    window.onload = function () {
+        previewImage();
+    };
+</script>
 
 </body>
 </html>

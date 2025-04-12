@@ -12,8 +12,8 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
 
     List<Orders> findAllByBookListContaining(Book book);
 
-    @Query("SELECT EXTRACT(MONTH FROM o.localDateTime) as month, SUM(o.totalPrice), COUNT(o.id) " +
-            "FROM Orders o GROUP BY EXTRACT(MONTH FROM o.localDateTime)")
+    @Query("SELECT EXTRACT(MONTH FROM o.localDateTime) AS month, SUM(o.totalPrice), COUNT(o.id) " +
+            "FROM Orders o GROUP BY month ORDER BY month ASC")
     List<Object[]> getMonthlySalesStats();
 }
 

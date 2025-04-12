@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <title>Înregistrare Utilizator</title>
     <meta charset="UTF-8">
     <style>
@@ -51,7 +52,7 @@
         form input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 6px;
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 16px;
@@ -61,6 +62,14 @@
             border-color: #3498db;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
             outline: none;
+        }
+
+        .error,
+        .text-danger {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-align: left;
         }
 
         button {
@@ -74,6 +83,7 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px;
         }
 
         button:hover {
@@ -101,16 +111,30 @@
 <div class="register-container">
     <h2>📝 Înregistrare Utilizator</h2>
 
-    <form th:action="@{/registerUser}" method="post" th:object="${user}">
+    <form th:action="@{/registerUser}" method="post" th:object="${userCreateDto}">
+
         <input type="text" th:field="*{username}" placeholder="Username" required />
-        <input type="password" th:field="*{password}" placeholder="Password" required />
+        <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+        <input type="password" th:field="*{password}" placeholder="Parolă" required />
+        <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
         <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
+        <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+
         <input type="text" th:field="*{name}" placeholder="Nume complet" required />
+        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+            <span th:errors="*{name}"></span>
+        </div>
+
         <input type="text" th:field="*{address}" placeholder="Adresă" required />
+        <div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+
         <input type="text" th:field="*{email}" placeholder="Email" required />
+        <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
         <button type="submit">Înregistrează-te</button>
     </form>
-
 
     <a th:href="@{/login}">Ai deja un cont? Autentifică-te</a>
 </div>

@@ -10,19 +10,22 @@ import lombok.Setter;
 @Setter
 public class UserCreateDto {
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9._]{3,19}$", message = "Username-ul trebuie să înceapă cu o literă și poate conține litere, cifre, puncte și underscore. Lungime între 4 și 20 de caractere.")
     private String username;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Parola trebuie să aibă minim 8 caractere, inclusiv o literă mare, o literă mică, o cifră și un caracter special."
-    )
+    @Size(min = 8, max = 50, message = "Parola incorecta: Minim 8 caractere necesare")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,50}$", message = "Parola trebuie sa contina cel putin o majuscula si o cifra")
     private String password;
+
     private String confirmPassword;
+
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Campul trebuie completat")
     private String name;
+
     @Email
     @NotBlank
     private String email;
+
     @NotBlank
     private String address;
     private String role = "ROLE_USER";

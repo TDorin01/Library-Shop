@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <title>Utilizatori Conectați</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -124,7 +125,7 @@
 <a th:href="@{/admin/adminForm}" class="admin-btn">← Panou Admin</a>
 
 <div class="container">
-    <h1 class="fade-in"><i class="fas fa-users icon"></i> Utilizatori Conectați</h1>
+    <h1 class="fade-in"><i class="fas fa-users icon"></i> Utilizatori Inregistrati</h1>
 
     <table class="fade-in" th:if="${!#lists.isEmpty(connectedUsers)}">
         <thead>

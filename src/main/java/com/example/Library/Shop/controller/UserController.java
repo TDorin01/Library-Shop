@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/registerForm")
     public String displayRegisterForm(Model model) {
-        model.addAttribute("user", new Users());
+        model.addAttribute("userCreateDto", new UserCreateDto());
         return "user/registerUserForm";
     }
 
@@ -27,16 +27,16 @@ public class UserController {
     public String registerUser(@Valid @ModelAttribute UserCreateDto userCreateDto, BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("userCreateDto", userCreateDto);
-            return "registerUserForm";
+            return "user/registerUserForm";
         }
         else if(userService.findByEmail(userCreateDto.getEmail()).isPresent()){
             bindingResult.rejectValue("email", "error.email", "Emailul tau a fost deja inregistrat!");
-            return "registerUserForm";
+            return "user/registerUserForm";
         }
 
         else if (!(userCreateDto.getPassword().equals(userCreateDto.getConfirmPassword()))) {
             bindingResult.rejectValue("verifypassword", "error.verifypassword", "Parolele nu se potrivesc!");
-            return "registerUserForm";
+            return "user/registerUserForm";
 }
         userService.createUser(userCreateDto.mapToUser());
         return "redirect:/";
