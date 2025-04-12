@@ -1,5 +1,4 @@
 package com.example.Library.Shop.security;
-
 import com.example.Library.Shop.service.LoginHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity

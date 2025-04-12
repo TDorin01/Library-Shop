@@ -1,6 +1,4 @@
 package com.example.Library.Shop.model.dto;
-
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

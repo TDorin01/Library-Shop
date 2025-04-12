@@ -1,5 +1,4 @@
 package com.example.Library.Shop.model;
-
 import jakarta.persistence.*;
 import lombok.*;
 
