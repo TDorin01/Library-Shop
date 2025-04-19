@@ -122,7 +122,7 @@
         <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
         <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
 
-        <input type="text" th:field="*{name}" placeholder="Nume complet" required />
+        <input type="text" th:field="*{name}" placeholder="Nume si prenume" required />
         <div th:if="${#fields.hasErrors('name')}" class="text-danger">
             <span th:errors="*{name}"></span>
         </div>

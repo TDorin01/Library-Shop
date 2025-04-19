@@ -1,5 +1,5 @@
 package com.example.Library.Shop.service;
-import com.example.Library.Shop.model.Users;
+import com.example.Library.Shop.model.User;
 import com.example.Library.Shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,36 +14,35 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    @Autowired
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-       public void createUser(Users user){
+       public void createUser(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
     public void deleteUserByUsername(String username) {
-        Users user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         userRepository.delete(user);
     }
 
 
-    public Optional<Users> findByEmail(String email) {
-        if (email != null) {
-            return userRepository.findByEmail(email);
-        }
-    return null;
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(email)
+                .flatMap(userRepository::findByEmail);
     }
 
 
-    public Users getLoggedInUser() {
-        return null;
+
+    public User getLoggedInUser() {
+        return getCurrentAuthenticatedUser();
     }
 
-    public Users getCurrentAuthenticatedUser() {
+
+    public User getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()
@@ -54,4 +53,8 @@ public class UserService {
 
         return null;
     }
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 }

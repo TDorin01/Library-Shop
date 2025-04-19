@@ -1,5 +1,6 @@
 package com.example.Library.Shop.service;
-import com.example.Library.Shop.model.Users;
+
+import com.example.Library.Shop.model.User;
 import com.example.Library.Shop.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,16 +23,21 @@ public class LoginHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
 
         String username = authentication.getName();
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+
 
         String role = user.getRole();
-        int userId = user.getId();
 
-        if ("ROLE_ADMIN".equals(role)) {
+        if ("ROLE_ADMIN".equalsIgnoreCase(role)) {
             response.sendRedirect("/admin/adminForm");
-        } else if ("ROLE_USER".equals(role)) {
-            response.sendRedirect("/?id=" + userId);
+        } else if ("ROLE_USER".equalsIgnoreCase(role)) {
+            response.sendRedirect("/?id=" + user.getId());
+        } else {
+
+            response.sendRedirect("/access-denied");
         }
     }
 }

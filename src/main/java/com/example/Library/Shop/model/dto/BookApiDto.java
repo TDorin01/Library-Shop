@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SalesStatisticDto {
-    private int month;
-    private double totalSales;
-    private long totalOrders;
+public class BookApiDto {
+    private String title;
+    private String author;
+    private String description;
 }

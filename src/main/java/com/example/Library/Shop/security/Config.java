@@ -28,21 +28,21 @@ public class Config {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/")
-                                .invalidateHttpSession(true)
-                                .deleteCookies("JSESSIONID")
-                        )
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/listBooks", "/createBookForm", "/updateForm", "/deleteBook").hasRole("ADMIN")
-                        .requestMatchers("/registerForm").permitAll()
-                        .requestMatchers("/registerUser").permitAll()
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/registerForm", "/registerUser", "/", "/api/search").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/admin/**", "/listBooks", "/createBookForm", "/updateForm", "/deleteBook").hasRole("ADMIN")
                         .anyRequest().authenticated()
-
                 );
+
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder delegatingPasswordEncoder() {

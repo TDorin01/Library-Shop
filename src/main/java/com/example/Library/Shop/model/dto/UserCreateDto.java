@@ -1,5 +1,5 @@
 package com.example.Library.Shop.model.dto;
-import com.example.Library.Shop.model.Users;
+import com.example.Library.Shop.model.User;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.Getter;
@@ -30,8 +30,8 @@ public class UserCreateDto {
     private String address;
     private String role = "ROLE_USER";
 
-    public Users mapToUser() {
-        Users user = new Users();
+    public User mapToUser() {
+        User user = new User();
         user.setUsername(this.username);
         user.setPassword(this.password);
         user.setName(this.name);

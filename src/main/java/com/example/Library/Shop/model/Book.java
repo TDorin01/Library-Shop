@@ -4,7 +4,7 @@ import lombok.*;
 
 
 @Entity
-@Table(name="book")
+@Table(name="books")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class Book {
     private String category;
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
 
 }

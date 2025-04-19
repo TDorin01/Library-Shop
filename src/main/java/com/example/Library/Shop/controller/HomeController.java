@@ -1,6 +1,7 @@
 package com.example.Library.Shop.controller;
 import com.example.Library.Shop.model.Book;
-import com.example.Library.Shop.model.Users;
+import com.example.Library.Shop.model.User;
+import com.example.Library.Shop.model.dto.BookApiDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.service.BookApiService;
 import com.example.Library.Shop.service.BookService;
@@ -31,7 +32,7 @@ public class HomeController {
 
         if (authentication != null) {
             MyUser myUser = (MyUser) authentication.getPrincipal();
-            Users user = myUser.getUser();
+            User user = myUser.getUser();
             model.addAttribute("loggedInUser", user.getUsername());
             model.addAttribute("userId", user.getId());
             model.addAttribute("userRole", user.getRole());
@@ -66,13 +67,11 @@ public class HomeController {
 
     @GetMapping("/api/search")
     public String searchBooks(@RequestParam String title, Model model) {
-        List<String> ApiResponse = bookApiService.searchRomanianBooksByTitle(title);
-        if (ApiResponse == null || ApiResponse.isEmpty()) {
-            ApiResponse = List.of(" Nu a fost gasita nicio carte.");
-        }
-        model.addAttribute("apiList", ApiResponse);
-        return "api/response";
+        List<BookApiDto> apiList = bookApiService.searchRomanianBooksByTitle(title);
+        model.addAttribute("apiList", apiList);
+        return "api/response"; // Sau alt view dacă ai redenumit
     }
+
 
 
 }

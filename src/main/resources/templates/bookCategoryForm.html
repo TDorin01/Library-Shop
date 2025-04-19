@@ -116,7 +116,7 @@
     <div class="actions">
         <a href="/"><i class="fas fa-home"></i> Acasă</a>
         <a href="/cart"><i class="fas fa-shopping-cart"></i> Coș</a>
-        <a th:if="${loggedInUser != null}" href="/admin/adminForm"
+        <a th:if="${userRole == 'ROLE_ADMIN'}" href="/admin/adminForm"
            style="background-color: #2980b9; padding: 8px 14px; border-radius: 6px;">🔙 Admin Panel</a>
         <a th:if="${loggedInUser != null}" href="/logout"
            style="background-color: #e67e22; padding: 8px 14px; border-radius: 6px;">🔓 Logout</a>

@@ -1,5 +1,6 @@
 package com.example.Library.Shop.model.dto;
 
+import com.example.Library.Shop.model.Book;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookUpdateDto {
-    @NotBlank
-    private int id;
+    @NotNull
+    private Integer id;
 
     @NotBlank
     private String title;
@@ -18,7 +19,6 @@ public class BookUpdateDto {
     @NotBlank
     private String author;
 
-    @NotBlank
     @PositiveOrZero
     private double price;
 
@@ -28,5 +28,14 @@ public class BookUpdateDto {
     @NotBlank
     private String category;
 
-
+    public Book toBook() {
+        Book book = new Book();
+        book.setId(this.id);
+        book.setTitle(this.title);
+        book.setAuthor(this.author);
+        book.setPrice(this.price);
+        book.setImageUrl(this.imageUrl);
+        book.setCategory(this.category);
+        return book;
+    }
 }

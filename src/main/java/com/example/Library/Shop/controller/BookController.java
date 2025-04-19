@@ -1,8 +1,7 @@
 package com.example.Library.Shop.controller;
 import com.example.Library.Shop.model.Book;
-import com.example.Library.Shop.model.Orders;
-import com.example.Library.Shop.model.Users;
-import com.example.Library.Shop.model.dto.BookCreateDto;
+import com.example.Library.Shop.model.Order;
+import com.example.Library.Shop.model.User;
 import com.example.Library.Shop.model.dto.BookUpdateDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.repository.OrderRepository;
@@ -14,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 
@@ -24,11 +25,10 @@ public class BookController {
     private final BookService bookService;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
 
     @GetMapping("/admin/listBooks")
     public String getUsersBooks(Model model, Authentication authentication) {
-        Users user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new RuntimeException("No user find"));
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new RuntimeException("No user find"));
         List<Book> bookList = bookService.findBooksByUser(user);
         model.addAttribute("totalPrice", bookService.calculateTotalBooksPrice(bookList));
         model.addAttribute("bookList", bookList);
@@ -41,50 +41,82 @@ public class BookController {
     }
 
     @GetMapping("/createBookForm")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public String createBook(Model model) {
+     public String createBook(Model model) {
         model.addAttribute("book",new Book());
         return "createBook";
     }
 
     @PostMapping("/saveBook")
-    public String savebook(@ModelAttribute Book book, Authentication authentication) {
-        Users user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new RuntimeException("No user find"));
+    public String saveBook(@ModelAttribute Book book,
+                           Authentication authentication,
+                           RedirectAttributes redirectAttributes) {
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         bookService.saveBook(book, user.getId());
+
+        redirectAttributes.addFlashAttribute("successMessage", " Cartea a fost salvată cu succes!");
         return "redirect:/admin/listBooks";
     }
 
+
     @PostMapping("/updateBook")
-    public String updateBook(@ModelAttribute BookUpdateDto bookUpdateDto) {
-        bookService.updateBook(bookUpdateDto);
+    public String updateBook(@ModelAttribute BookUpdateDto bookUpdateDto,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            bookService.updateBook(bookUpdateDto);
+            redirectAttributes.addFlashAttribute("successMessage", " Cartea a fost actualizată cu succes!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", " Eroare la actualizarea cărții.");
+        }
+
         return "redirect:/admin/listBooks";
     }
+
 
     @GetMapping("/updateForm")
     public String getUpdateForm(@RequestParam("id") int id, Model model) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
-        model.addAttribute("book", book);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        BookUpdateDto bookUpdateDto = new BookUpdateDto();
+        bookUpdateDto.setId(book.getId());
+        bookUpdateDto.setAuthor(book.getAuthor());
+        bookUpdateDto.setTitle(book.getTitle());
+        bookUpdateDto.setPrice(book.getPrice());
+        bookUpdateDto.setCategory(book.getCategory());
+        bookUpdateDto.setImageUrl(book.getImageUrl());
+
+        model.addAttribute("book", bookUpdateDto);
         return "updateBookForm";
     }
 
-    @PostMapping("/deleteBook")
-    public String deleteBook(@RequestParam("id") int id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
-        List<Orders> orders = orderRepository.findAllByBookListContaining(book);
 
-        for (Orders order : orders) {
-            order.getBookList().remove(book);
-            orderRepository.save(order);
+    @GetMapping("/bookCategory")
+    public String getBookByCategory(Model model, @RequestParam String category, Authentication authentication) {
+        List<Book> bookList = bookRepository.findByCategory(category);
+        model.addAttribute("bookCategoryList", bookList);
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = userRepository.findByUsername(authentication.getName())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            model.addAttribute("loggedInUser", user.getUsername());
         }
-        bookRepository.delete(book);
+
+        return "bookCategoryForm";
+    }
+    @PostMapping("/deleteBook")
+    public String deleteBook(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        try {
+            bookService.deleteBook(id);
+            redirectAttributes.addFlashAttribute("successMessage", " Cartea a fost ștearsă cu succes!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", " Nu s-a putut șterge cartea.");
+        }
+
         return "redirect:/admin/listBooks";
     }
 
-    @GetMapping("/bookCategory")
-    public String getBookByCategory(Model model, @RequestParam String category) {
-        List<Book> bookList = bookRepository.findByCategory(category);
-        model.addAttribute("bookCategoryList", bookList);
-        return "bookCategoryForm";
-    }
+
+
 
 }

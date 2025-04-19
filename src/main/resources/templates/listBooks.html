@@ -181,6 +181,26 @@
         .admin-back-btn:hover {
             background-color: #2980b9;
         }
+
+        .message-box {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success-message {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .error-message {
+            background-color: #f2dede;
+            color: #a94442;
+        }
     </style>
 </head>
 <body>
@@ -190,6 +210,10 @@
 
 <a th:href="@{/admin/adminForm}" class="admin-back-btn">← Panou Admin</a>
 <a th:href="@{/logout}" class="logout-btn">🔓 Logout</a>
+
+
+<div th:if="${successMessage}" class="message-box success-message" th:text="${successMessage}"></div>
+<div th:if="${errorMessage}" class="message-box error-message" th:text="${errorMessage}"></div>
 
 <h1 class="fade-in">📚 My list of Books</h1>
 
