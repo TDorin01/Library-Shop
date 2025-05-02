@@ -67,9 +67,10 @@ public class HomeController {
 
     @GetMapping("/api/search")
     public String searchBooks(@RequestParam String title, Model model) {
-        List<BookApiDto> apiList = bookApiService.searchRomanianBooksByTitle(title);
+        List<BookApiDto> apiList = bookApiService.searchBooks(title);
+
         model.addAttribute("apiList", apiList);
-        return "api/response"; // Sau alt view dacă ai redenumit
+        return "api/response";
     }
 
 

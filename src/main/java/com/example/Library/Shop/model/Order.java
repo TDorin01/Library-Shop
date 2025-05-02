@@ -23,6 +23,8 @@ public class Order {
     private LocalDateTime localDateTime;
     private String orderUsername;
     private String email;
+    private String country;
+    private String city;
     private String address;
     private double totalPrice;
     @ManyToMany

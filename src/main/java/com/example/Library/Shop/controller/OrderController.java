@@ -44,6 +44,8 @@ public class OrderController {
         order.setOrderUsername(user.getName());
         order.setLocalDateTime(LocalDateTime.now());
         order.setTotalPrice(bookService.calculateTotalBooksPrice(cart));
+        order.setCountry(user.getCountry());
+        order.setCity(user.getCity());
         order.setEmail(user.getEmail());
         order.setAddress(user.getAddress());
         Order savedOrder = orderRepository.save(order);

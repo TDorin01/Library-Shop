@@ -15,7 +15,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class AdminController {
-    private final UserService userService;
     private final UserRepository userRepository;
     private final OrderService orderService;
 

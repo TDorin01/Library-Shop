@@ -34,7 +34,7 @@ public class Config {
                         .deleteCookies("JSESSIONID")
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/registerForm", "/registerUser", "/", "/api/search").permitAll()
+                        .requestMatchers("/registerForm", "/registerUser", "/","/locations/**","/api/search").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**", "/listBooks", "/createBookForm", "/updateForm", "/deleteBook").hasRole("ADMIN")
                         .anyRequest().authenticated()

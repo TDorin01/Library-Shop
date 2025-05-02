@@ -197,7 +197,7 @@
     <div class="logo">📚 Online Library Shop</div>
     <div class="actions">
         <a th:if="${loggedInUser == null}" href="/login">Login</a>
-        <a th:if="${loggedInUser == null}" href="/register">Register</a>
+        <a th:if="${loggedInUser == null}" href="/registerForm">Register</a>
         <a href="/cart"><i class="fas fa-shopping-cart"></i> Coș</a>
         <span th:if="${loggedInUser != null}" style="margin-left: 20px; font-weight: bold;">
             👋 Salut, <span th:text="${loggedInUser}">Utilizator</span>!

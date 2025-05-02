@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
-    <title>Înregistrare Utilizator</title>
     <meta charset="UTF-8">
+    <title>Înregistrare Utilizator</title>
+    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <style>
         body {
             margin: 0;
@@ -46,19 +46,25 @@
             margin-bottom: 20px;
             color: #2c3e50;
             font-size: 28px;
-            text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
         }
 
-        form input {
+        form input,
+        form select {
             width: 100%;
+            height: 44px;
             padding: 12px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 16px;
+            background-color: #fff;
+            color: #2c3e50;
+            font-family: inherit;
+            box-sizing: border-box;
         }
 
-        form input:focus {
+        form input:focus,
+        form select:focus {
             border-color: #3498db;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
             outline: none;
@@ -104,7 +110,6 @@
     </style>
 </head>
 <body>
-
 <div class="background-container"></div>
 <div class="background-overlay"></div>
 
@@ -112,7 +117,6 @@
     <h2>📝 Înregistrare Utilizator</h2>
 
     <form th:action="@{/registerUser}" method="post" th:object="${userCreateDto}">
-
         <input type="text" th:field="*{username}" placeholder="Username" required />
         <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 
@@ -122,10 +126,18 @@
         <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
         <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
 
-        <input type="text" th:field="*{name}" placeholder="Nume si prenume" required />
-        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
-            <span th:errors="*{name}"></span>
-        </div>
+        <input type="text" th:field="*{name}" placeholder="Nume și prenume" required />
+        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+        <select id="country" name="country" th:field="*{country}" required>
+            <option value="">Selectează o țară</option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+
+        <select id="city" name="city" th:field="*{city}" required>
+            <option value="">Selectează un oraș</option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
 
         <input type="text" th:field="*{address}" placeholder="Adresă" required />
         <div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
@@ -136,8 +148,41 @@
         <button type="submit">Înregistrează-te</button>
     </form>
 
-    <a th:href="@{/login}">Ai deja un cont? Autentifică-te</a>
+    <a th:href="@{/login}">Ai deja un cont? Autentifică-te aici</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const countrySelect = document.getElementById("country");
+        const citySelect = document.getElementById("city");
+
+        fetch("/locations")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(entry => {
+                    const option = document.createElement("option");
+                    option.value = entry.country;
+                    option.textContent = entry.country;
+                    countrySelect.appendChild(option);
+                });
+
+                countrySelect.addEventListener("change", function () {
+                    const selectedCountry = this.value;
+                    citySelect.innerHTML = '<option value="">Selectează un oraș</option>';
+                    const selected = data.find(entry => entry.country === selectedCountry);
+                    if (selected && selected.cities) {
+                        selected.cities.forEach(city => {
+                            const option = document.createElement("option");
+                            option.value = city;
+                            option.textContent = city;
+                            citySelect.appendChild(option);
+                        });
+                    }
+                });
+            })
+            .catch(error => console.error("Eroare la preluarea locațiilor:", error));
+    });
+</script>
 
 </body>
 </html>

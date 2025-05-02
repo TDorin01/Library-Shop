@@ -49,44 +49,45 @@
         }
 
         .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
         }
 
         .card {
             background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 3px solid #000000;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 0.6s ease;
             transition: transform 0.2s, box-shadow 0.2s;
+            max-width: 600px;
+            width: 100%;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .card h2 {
             font-size: 20px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #2c3e50;
+            font-weight: bold;
         }
 
         .card h4 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #3498db;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #2980b9;
         }
 
         .card p {
             font-size: 14px;
-            color: #555;
-            line-height: 1.5;
+            color: #444;
+            font-style: italic;
         }
 
         @keyframes fadeInUp {
@@ -120,11 +121,11 @@
 
 <h1>🔍 Rezultate căutare OpenLibrary</h1>
 
-<div class="results-grid">
+<div class="results-grid" th:if="${apiList != null}">
     <div class="card" th:each="book : ${apiList}">
         <h2 th:text="${book.title}">Titlu</h2>
         <h4 th:text="'✍️ Autor: ' + ${book.author}">Autor</h4>
-        <p th:text="'📝 ' + ${book.description}">Descriere</p>
+        <p th:text="'📄 ' + ${book.description}">Descriere</p>
     </div>
 </div>
 

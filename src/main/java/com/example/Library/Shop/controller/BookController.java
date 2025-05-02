@@ -1,14 +1,11 @@
 package com.example.Library.Shop.controller;
 import com.example.Library.Shop.model.Book;
-import com.example.Library.Shop.model.Order;
 import com.example.Library.Shop.model.User;
 import com.example.Library.Shop.model.dto.BookUpdateDto;
 import com.example.Library.Shop.repository.BookRepository;
-import com.example.Library.Shop.repository.OrderRepository;
 import com.example.Library.Shop.repository.UserRepository;
 import com.example.Library.Shop.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +38,8 @@ public class BookController {
     }
 
     @GetMapping("/createBookForm")
-     public String createBook(Model model) {
-        model.addAttribute("book",new Book());
+    public String createBook(Model model) {
+        model.addAttribute("book", new Book());
         return "createBook";
     }
 
@@ -115,8 +112,6 @@ public class BookController {
 
         return "redirect:/admin/listBooks";
     }
-
-
 
 
 }

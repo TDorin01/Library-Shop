@@ -12,8 +12,8 @@ public class UserCreateDto {
     @NotBlank
     private String username;
 
-    @Size(min = 8, max = 50, message = "Parola incorecta: Minim 8 caractere necesare")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,50}$", message = "Parola trebuie sa contina cel putin o majuscula si o cifra")
+    @Size(min = 6, max = 10, message = "Parola incorecta: Minim 8 caractere necesare")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{6,10}$", message = "Parola trebuie sa contina cel putin o majuscula si o cifra")
     private String password;
 
     private String confirmPassword;
@@ -26,6 +26,14 @@ public class UserCreateDto {
     @NotBlank
     private String email;
 
+
+    @NotBlank
+    private String country;
+
+
+    @NotBlank
+    private String city;
+
     @NotBlank
     private String address;
     private String role = "ROLE_USER";
@@ -36,6 +44,8 @@ public class UserCreateDto {
         user.setPassword(this.password);
         user.setName(this.name);
         user.setRole(this.role);
+        user.setCountry(this.country);
+        user.setCity(this.city);
         user.setEmail(this.email);
         user.setAddress(this.address);
         return user;
