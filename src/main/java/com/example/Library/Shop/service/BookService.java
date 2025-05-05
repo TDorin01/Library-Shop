@@ -94,6 +94,7 @@ public class BookService {
         bookRepository.delete(book);
     }
     public Page<Book> getBooksPage(Pageable pageable) {
+
         return bookRepository.findAll(pageable);
     }
 

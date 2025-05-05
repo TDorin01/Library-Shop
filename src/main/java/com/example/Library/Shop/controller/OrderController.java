@@ -55,7 +55,8 @@ public class OrderController {
 
     @GetMapping("/orderSucced")
     public String orderSucceded (){
-    return "order/orderSuccedForm";
+
+        return "order/orderSuccedForm";
     }
     @PostMapping("/cart/delete")
     public String removeFromCart(@RequestParam("bookId") Long bookId, HttpSession session) {

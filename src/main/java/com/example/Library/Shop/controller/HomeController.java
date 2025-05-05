@@ -62,7 +62,7 @@ public class HomeController {
         cart.add(book);
         session.setAttribute("cart", cart);
         redirectAttributes.addFlashAttribute("success", "Cartea a fost adăugată în coș.");
-        return "redirect:/";
+        return "redirect:/cart";
     }
 
     @GetMapping("/api/search")

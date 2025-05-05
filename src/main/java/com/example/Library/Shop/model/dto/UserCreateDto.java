@@ -12,9 +12,9 @@ public class UserCreateDto {
     @NotBlank
     private String username;
 
-    @Size(min = 6, max = 10, message = "Parola incorecta: Minim 8 caractere necesare")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{6,10}$", message = "Parola trebuie sa contina cel putin o majuscula si o cifra")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{6,12}$", message = "Parola trebuie sa contina cel putin 6 cifre dintre care minim o majuscula si o cifra")
     private String password;
+
 
     private String confirmPassword;
 

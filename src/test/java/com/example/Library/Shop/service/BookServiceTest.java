@@ -251,7 +251,7 @@ class BookServiceTest {
     void updateBookShouldUpdateBookFields() {
 
         User user = new User();
-        user.setUsername("user6");
+        user.setUsername("user");
         user.setPassword("123456");
         user.setRole("ROLE_USER");
         user = userRepository.save(user);
