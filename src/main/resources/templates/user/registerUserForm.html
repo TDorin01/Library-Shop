@@ -63,6 +63,19 @@
             box-sizing: border-box;
         }
 
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle-icon {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #888;
+        }
+
         form input:focus,
         form select:focus {
             border-color: #3498db;
@@ -120,10 +133,16 @@
         <input type="text" th:field="*{username}" placeholder="Username" required />
         <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 
-        <input type="password" th:field="*{password}" placeholder="Parolă" required />
+        <div class="password-toggle">
+            <input type="password" th:field="*{password}" placeholder="Parolă" required />
+            <span class="password-toggle-icon" onclick="togglePassword(this)">👁️</span>
+        </div>
         <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-        <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
+        <div class="password-toggle">
+            <input type="password" th:field="*{confirmPassword}" placeholder="Confirmă parola" required />
+            <span class="password-toggle-icon" onclick="togglePassword(this)">👁️</span>
+        </div>
         <div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
 
         <input type="text" th:field="*{name}" placeholder="Nume și prenume" required />
@@ -182,6 +201,17 @@
             })
             .catch(error => console.error("Eroare la preluarea locațiilor:", error));
     });
+
+    function togglePassword(icon) {
+        const input = icon.previousElementSibling;
+        if (input.type === "password") {
+            input.type = "text";
+            icon.textContent = "🙈";
+        } else {
+            input.type = "password";
+            icon.textContent = "👁️";
+        }
+    }
 </script>
 
 </body>

@@ -24,7 +24,7 @@ public class User {
     @NotBlank(message = "Username cannot be blank")
     private String username;
 
-    // FARA validare pe password aici – se validează în serviciu
+
     private String password;
 
     @NotBlank(message = "Numele nu poate fi gol")
