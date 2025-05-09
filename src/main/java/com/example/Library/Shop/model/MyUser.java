@@ -1,6 +1,5 @@
-package com.example.Library.Shop.service;
+package com.example.Library.Shop.model;
 
-import com.example.Library.Shop.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="icon" type="image/jpg" href="https://i.postimg.cc/6pTw6fxS/Chat-GPT-Image-Apr-13-2025-01-04-49-AM.png">
     <meta charset="UTF-8">
     <title>Detalii Comandă</title>
     <style>
@@ -46,15 +45,14 @@
             padding-bottom: 6px;
         }
 
-        .order-info, .billing-info, .payment-info {
+        .order-info, .billing-info {
             margin-top: 20px;
             font-size: 16px;
             color: #555;
         }
 
         .order-info span,
-        .billing-info span,
-        .payment-info span {
+        .billing-info span {
             font-weight: bold;
             color: #2c3e50;
         }
@@ -83,17 +81,25 @@
             text-align: right;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 40px;
-            text-align: center;
-            color: #3498db;
-            font-weight: bold;
-            text-decoration: none;
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .payment-method {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirm-container {
+            text-align: right;
+            margin-top: 30px;
         }
 
         .confirm-btn {
@@ -112,11 +118,6 @@
         .confirm-btn:hover {
             background-color: #27ae60;
         }
-
-        .confirm-container {
-            text-align: right;
-            margin-top: 30px;
-        }
     </style>
 </head>
 <body>
@@ -127,54 +128,72 @@
 
     <h1>📦 Detalii Comandă</h1>
 
-    <div class="order-info">
-        <p><span>ID Comandă:</span> <span th:text="${order.id}">#12345</span></p>
-        <p><span>Data comenzii:</span> <span th:text="${#temporals.format(order.localDateTime, 'dd MMMM yyyy HH:mm')}">01 Aprilie 2025</span></p>
-        <p><span>Total:</span> <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></p>
-    </div>
+    <form id="paymentForm" method="get">
+        <div class="order-info">
+            <p><span>ID Comandă:</span> <span th:text="${order.id}">#12345</span></p>
+            <p><span>Data comenzii:</span> <span th:text="${#temporals.format(order.localDateTime, 'dd MMMM yyyy HH:mm')}">01 Aprilie 2025</span></p>
+            <p><span>Total:</span> <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></p>
+        </div>
 
-    <h2>🧾 Detalii Client</h2>
-    <div class="billing-info">
-        <p><span>Nume utilizator:</span> <span th:text="${order.orderUsername}">Ion Popescu</span></p>
-        <p><span>Email:</span> <span th:text="${order.email}">ion@email.com</span></p>
-        <p><span>Țara:</span> <span th:text="${order.country}">Romania</span></p>
-        <p><span>Oraș:</span> <span th:text="${order.city}">Galați</span></p>
-        <p><span>Adresă:</span> <span th:text="${order.address}">Str. Exemplu, Nr. 123</span></p>
-    </div>
+        <h2>🧾 Detalii Client</h2>
+        <div class="billing-info">
+            <p><span>Nume utilizator:</span> <span th:text="${order.orderUsername}">Ion Popescu</span></p>
+            <p><span>Email:</span> <span th:text="${order.email}">ion@email.com</span></p>
+            <p><span>Țara:</span> <span th:text="${order.country}">Romania</span></p>
+            <p><span>Oraș:</span> <span th:text="${order.city}">Galați</span></p>
+            <p><span>Adresă:</span> <span th:text="${order.address}">Str. Exemplu, Nr. 123</span></p>
+        </div>
 
-    <h2>💳 Detalii Plată</h2>
-    <div class="payment-info">
-        <p><span>Metodă:</span> Plata ramburs la curier.</p>
-    </div>
+        <h2>💳 Metodă de Plată</h2>
+        <div class="payment-method">
+            <label for="method" style="font-weight: bold; display: block; margin-bottom: 10px;">Selectează:</label>
+            <select id="method" name="method" required>
+                <option value="cash">💵 Plata cash (la livrare)</option>
+                <option value="card">💳 Plata Online (cu cardul)</option>
+            </select>
+        </div>
 
-    <h2>📚 Cărți comandate</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Titlu</th>
-            <th>Autor</th>
-            <th>Preț</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${order.bookList}">
-            <td th:text="${book.title}">Titlu</td>
-            <td th:text="${book.author}">Autor</td>
-            <td th:text="${book.price + ' lei'}">0.00 lei</td>
-        </tr>
-        <tr class="total-row">
-            <td colspan="3">Total: <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></td>
-        </tr>
-        </tbody>
-    </table>
+        <h2>📚 Cărți comandate</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Titlu</th>
+                <th>Autor</th>
+                <th>Preț</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${order.bookList}">
+                <td th:text="${book.title}">Titlu</td>
+                <td th:text="${book.author}">Autor</td>
+                <td th:text="${book.price + ' lei'}">0.00 lei</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="total-row">
+                <td colspan="3">Total: <span th:text="${order.totalPrice + ' lei'}">0.00 lei</span></td>
+            </tr>
+            </tfoot>
+        </table>
 
-    <div class="confirm-container">
-        <form th:action="@{/orderSucced}" method="get">
-            <button type="submit" class="confirm-btn"> Confirmă Finalizarea</button>
-        </form>
-    </div>
-
+        <div class="confirm-container">
+            <button type="submit" class="confirm-btn">Confirmă Finalizarea</button>
+        </div>
+    </form>
 </div>
+
+<script>
+    document.getElementById("paymentForm").addEventListener("submit", function (event) {
+        const method = document.getElementById("method").value;
+        const form = event.target;
+
+        if (method === "cash") {
+            form.action = "/orderSuccedForm";
+        } else if (method === "card") {
+            form.action = "/payments/paymentCard";
+        }
+    });
+</script>
 
 </body>
 </html>

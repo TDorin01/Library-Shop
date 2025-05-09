@@ -53,11 +53,6 @@ public class OrderController {
         return "redirect:/orders/" + savedOrder.getId();
     }
 
-    @GetMapping("/orderSucced")
-    public String orderSucceded (){
-
-        return "order/orderSuccedForm";
-    }
     @PostMapping("/cart/delete")
     public String removeFromCart(@RequestParam("bookId") Long bookId, HttpSession session) {
         List<Book> cart = (List<Book>) session.getAttribute("cart");
@@ -69,5 +64,10 @@ public class OrderController {
 
         return "redirect:/cart";
     }
+    @GetMapping("/orderSuccedForm")
+    public String orderFinalPage() {
+        return "order/orderSuccedForm";
+    }
+
 
 }

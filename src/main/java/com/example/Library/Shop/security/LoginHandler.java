@@ -1,4 +1,4 @@
-package com.example.Library.Shop.service;
+package com.example.Library.Shop.security;
 
 import com.example.Library.Shop.model.User;
 import com.example.Library.Shop.repository.UserRepository;

@@ -1,6 +1,6 @@
 package com.example.Library.Shop.service;
 
-import com.example.Library.Shop.model.User;
+import com.example.Library.Shop.model.MyUser;
 import com.example.Library.Shop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

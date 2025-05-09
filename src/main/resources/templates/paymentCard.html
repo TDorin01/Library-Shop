@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Plată cu Cardul</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            background-color: #f3f6f9;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        #card-element {
+            border: 1px solid #ccc;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #27ae60;
+            color: white;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #219150;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container">
+    <h2>💳 Plată cu Cardul</h2>
+    <form id="payment-form" th:action="@{/payments/processCardPayment}" method="post">
+        <div id="card-element"></div>
+        <input type="hidden" name="stripeToken" id="stripeToken">
+        <div class="error-message" id="card-errors"></div>
+        <button class="submit-btn" type="submit">Plătește</button>
+    </form>
+</div>
+
+<script>
+    // Initialize Stripe
+    const stripe = Stripe("pk_test_51RMuBSCrnr7rqb2YuefHeoWzaSXuPcIh7OVWUAikdUxveUzy4HSbXsEqTMCXv2YUUtJQaqkASg4wgtWXXxrCh2ny006xOFMzBh"); // <- înlocuiește cu cheia ta publică Stripe
+    const elements = stripe.elements();
+
+    // Style for card input
+    const style = {
+        base: {
+            color: "#32325d",
+            fontFamily: "'Segoe UI', Tahoma, sans-serif",
+            fontSize: "16px",
+            '::placeholder': {
+                color: "#aab7c4"
+            }
+        },
+        invalid: {
+            color: "#e74c3c"
+        }
+    };
+
+    // Create card element
+    const card = elements.create("card", {style: style});
+    card.mount("#card-element");
+
+    // Error handling
+    card.on("change", function (event) {
+        const errorDiv = document.getElementById("card-errors");
+        if (event.error) {
+            errorDiv.textContent = event.error.message;
+        } else {
+            errorDiv.textContent = "";
+        }
+    });
+
+    // Form submission
+    const form = document.getElementById("payment-form");
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                document.getElementById("card-errors").textContent = result.error.message;
+            } else {
+                document.getElementById("stripeToken").value = result.token.id;
+                form.submit();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

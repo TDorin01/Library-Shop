@@ -5,7 +5,7 @@ import com.example.Library.Shop.model.dto.BookApiDto;
 import com.example.Library.Shop.repository.BookRepository;
 import com.example.Library.Shop.service.BookApiService;
 import com.example.Library.Shop.service.BookService;
-import com.example.Library.Shop.service.MyUser;
+import com.example.Library.Shop.model.MyUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,9 +26,12 @@ public class HomeController {
     private final BookApiService bookApiService;
 
     @GetMapping("/")
-    public String home(Model model, Authentication authentication) {
+    public String home(Model model, Authentication authentication,HttpSession session) {
         List<Book> bookList = bookService.getAllBooks();
         model.addAttribute("bookList", bookList);
+        List<Book> cart = (List<Book>) session.getAttribute("cart");
+        int cartCount = (cart != null) ? cart.size() : 0;
+        model.addAttribute("cartCount", cartCount);
 
         if (authentication != null) {
             MyUser myUser = (MyUser) authentication.getPrincipal();

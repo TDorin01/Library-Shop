@@ -1,4 +1,5 @@
 package com.example.Library.Shop.service;
+
 import com.example.Library.Shop.exception.BookNotFoundException;
 import com.example.Library.Shop.model.Book;
 import com.example.Library.Shop.model.Order;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +68,6 @@ public class BookService {
     }
 
 
-
     public void updateBook(BookUpdateDto bookUpdateDto) {
         Book book = bookRepository.findById(bookUpdateDto.getId())
                 .orElseThrow(() -> new BookNotFoundException("Cartea cu ID-ul " + bookUpdateDto.getId() + " nu a fost găsită"));
@@ -93,6 +94,7 @@ public class BookService {
 
         bookRepository.delete(book);
     }
+
     public Page<Book> getBooksPage(Pageable pageable) {
 
         return bookRepository.findAll(pageable);

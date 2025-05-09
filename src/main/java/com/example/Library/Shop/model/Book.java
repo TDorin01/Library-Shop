@@ -1,10 +1,11 @@
 package com.example.Library.Shop.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 
 @Entity
-@Table(name="books")
+@Table(name = "books")
 @Getter
 @Setter
 @NoArgsConstructor
