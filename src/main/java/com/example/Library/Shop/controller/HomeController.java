@@ -29,6 +29,7 @@ public class HomeController {
     public String home(Model model, Authentication authentication,HttpSession session) {
         List<Book> bookList = bookService.getAllBooks();
         model.addAttribute("bookList", bookList);
+
         List<Book> cart = (List<Book>) session.getAttribute("cart");
         int cartCount = (cart != null) ? cart.size() : 0;
         model.addAttribute("cartCount", cartCount);

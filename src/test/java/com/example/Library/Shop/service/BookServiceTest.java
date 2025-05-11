@@ -21,6 +21,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class BookServiceTest {
 
+    private User createValidUser(String username, String email) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("12345678");
+        user.setName("Test User");
+        user.setEmail(email);
+        user.setCountry("Romania");
+        user.setCity("Cluj-Napoca");
+        user.setAddress("Strada Exemplu 123");
+        user.setRole("ROLE_USER");
+        return userRepository.save(user);
+    }
+
     @Autowired
     private BookService bookService;
 
@@ -86,11 +99,7 @@ class BookServiceTest {
 
     @Test
     void saveBookShouldSaveBookWithUser() {
-        User user = new User();
-        user.setUsername("user2");
-        user.setPassword("12345678");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user2", "user2@example.com");
 
         Book book = new Book();
         book.setTitle("Amintiri din copilărie");
@@ -116,11 +125,7 @@ class BookServiceTest {
     @Test
     void findBooksByUserShouldReturnCorrectBooks() {
 
-        User user = new User();
-        user.setUsername("user3");
-        user.setPassword("12345678");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user3", "user3@example.com");
 
         Book book1 = new Book();
         book1.setTitle("Book 1");
@@ -191,11 +196,7 @@ class BookServiceTest {
     @Test
     void getBooksByCategoryShouldReturnBooksInThatCategory() {
 
-        User user = new User();
-        user.setUsername("user4");
-        user.setPassword("12345678");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user4", "user4@example.com");
 
         Book book1 = new Book();
         book1.setTitle("Book 1");
@@ -225,11 +226,7 @@ class BookServiceTest {
     @Test
     void findById_shouldReturnBookIfExists() {
 
-        User user = new User();
-        user.setUsername("user1");
-        user.setPassword("12345678");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user1", "user1@example.com");
 
         Book book = new Book();
         book.setTitle("Amintiri din copilărie");
@@ -250,11 +247,7 @@ class BookServiceTest {
     @Test
     void updateBookShouldUpdateBookFields() {
 
-        User user = new User();
-        user.setUsername("user");
-        user.setPassword("123456");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user", "user@example.com");
 
         Book book = new Book();
         book.setTitle("Colt Alb");
@@ -287,12 +280,7 @@ class BookServiceTest {
     @Test
     void deleteBookShouldRemoveBookFromOrders() {
 
-        User user = new User();
-        user.setUsername("use1");
-        user.setPassword("user123");
-        user.setEmail("user1@email.com");
-        user.setRole("ROLE_USER");
-        user = userRepository.save(user);
+        User user = createValidUser("user1", "user1@example.com");
 
         Book book = new Book();
         book.setTitle("Book 1");
