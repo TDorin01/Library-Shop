@@ -32,6 +32,11 @@ public class UserController {
             model.addAttribute("userCreateDto", userCreateDto);
             return "user/registerUserForm";
         }
+        if (userService.findByUsername(userCreateDto.getUsername()).isPresent()) {
+            bindingResult.rejectValue("username", "error.username", "Acest username este deja folosit!");
+            model.addAttribute("userCreateDto", userCreateDto);
+            return "user/registerUserForm";
+        }
 
         if (userService.findByEmail(userCreateDto.getEmail()).isPresent()) {
             bindingResult.rejectValue("email", "error.email", "Emailul tău a fost deja înregistrat!");

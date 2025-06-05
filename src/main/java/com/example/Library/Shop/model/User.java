@@ -20,17 +20,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
+    @Column(unique = true)
     @NotBlank(message = "Username cannot be blank")
     private String username;
 
-
+    @NotBlank(message = "Parola nu poate fi goală")
     private String password;
 
+    @Column
     @NotBlank(message = "Numele nu poate fi gol")
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Campul trebuie completat")
     private String name;
 
+    @Column(unique = true)
     @Email(message = "Email invalid")
     @NotBlank(message = "Emailul nu poate fi gol")
     private String email;
