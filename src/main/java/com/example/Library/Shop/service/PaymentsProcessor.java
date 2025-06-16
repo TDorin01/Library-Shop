@@ -16,7 +16,7 @@ public class PaymentsProcessor {
         return switch (method) {
             case "card" -> creditCardService.process();
             case "cash" -> cashPaymentService.process();
-            default -> "invalid prcessing method";
+            default -> "invalid processing method";
         };
     }
 }
